@@ -6,13 +6,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
 import time
-import os
-import csv
-import base64
 import io
 import pandas as pd
 from urllib.parse import unquote
 
+
+big_df = pd.DataFrame(columns=['Senator','Party','State', 'Vote','vote_title','vote_issues'])
 # Step 1: Send request and get HTML response
 url = 'https://scorecard.lcv.org/scorecard?year=2022'
 response = requests.get(url)
@@ -41,50 +40,47 @@ driver.implicitly_wait(10)  # Implicit wait
 soup = BeautifulSoup(html, 'html.parser')
 bill_list = soup.find('div', {'id': 'scorecard-votes-page-senate-table-data'}).find_all('div', {'class' : 'tableRow dataItem'})
 
-bill_data = []
-vote_data = []
-
-
 for bill in bill_list:
     
     try:
-    
-        vote_year = bill.find('span', {'class': 'voteYear'}).text.strip()
-        vote_number = bill.find('span', {'class': 'voteNumber'}).text.strip()
+        
         href = bill.find('span', {'class': 'voteTitle'}).find('a')['href']
         vote_title = bill.find('span', {'class': 'voteTitle'}).text.strip()
         vote_issues = bill.find('span', {'class': 'voteIssues'}).text.strip()
-    
-    
-    
+        bill_summary_div = bill.find('div',{'class':'field-item even'})
+        bill_summary = bill_summary_div.find('p')
+
+
+        
+        bill_data= [{'vote_title':vote_title,'vote_issues':vote_issues, 'bill_summary': bill_summary}]
+        bill_data = bill_data*100
+        to_Add = pd.DataFrame(bill_data)
     
         new_url = 'https://scorecard.lcv.org/' + href
-
         driver.get(new_url)
-        
         wait = WebDriverWait(driver, 10)
         wait.until(EC.element_to_be_clickable((By.XPATH, '//a[@class="scorecard-table-export"]')))  
-
         driver.find_element("xpath",'//a[@class="scorecard-table-export"]').click()
-
         csv_link = driver.find_element("xpath",'//a[@class="scorecard-table-export"]').get_attribute('href')
-        
         encoded_csv = csv_link.split(',', 1)[1]
-
         # Decode the URL-encoded CSV data
         decoded_csv = unquote(encoded_csv)
-
         # Convert the decoded CSV data to a file-like object
         csv_file_like = io.StringIO(decoded_csv)
-
         # Read into a pandas DataFrame
         df = pd.read_csv(csv_file_like)
+        df['vote_title'] = to_Add['vote_title']
+        df['vote_issues'] = to_Add['vote_issues']
 
+        big_df = pd.concat([big_df,df],ignore_index=True)
         # Display the DataFrame
-        print(df.head())
         
         time.sleep(2)
+        
     except Exception as e:
+        
         print(f"Error occurred: {e}")
 
 driver.quit()
+
+big_df.to_csv('output.csv', index=False)
