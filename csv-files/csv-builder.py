@@ -1,7 +1,6 @@
 #right now, the issue is that when i'm looping through senators, it will keep deleting per bill
 #so kamala harris was senator in 2020, for every bill she votes on, my program will minus a senator
 #effectively, double counting
-#REMEMBER: GET THE TEXT INSIDE THE <P> TAG!!
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -10,22 +9,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
 import time
-import csv
 import io
 from urllib.parse import unquote
 
 
+
 big_df = pd.DataFrame(columns=['Senator','Party','State', 'Vote','Vote_Title','Vote_Issues', 'Vote_Summary'])
-# Step 1: Send request and get HTML response
 url = 'https://scorecard.lcv.org/scorecard?year=2022'
 response = requests.get(url)
 html = response.content
-
-senators = 100
-# Set up Chrome options
 chrome_options = webdriver.ChromeOptions()
-
-# Disable automatic downloads
 prefs = {
     "download.prompt_for_download": False,  # To disable download prompt
     "download.directory_upgrade": True,     # To enable directory monitoring
@@ -33,13 +26,9 @@ prefs = {
     "download_restrictions": 3              # To restrict all downloads
 }
 chrome_options.add_experimental_option("prefs", prefs)
-
-# Initialize the WebDriver with the updated options parameter
 driver = webdriver.Chrome(options=chrome_options)
 driver.implicitly_wait(10)  # Implicit wait
 
-
-# Step 2: Parse HTML and extract bill information
 soup = BeautifulSoup(html, 'html.parser')
 bill_list = soup.find('div', {'id': 'scorecard-votes-page-senate-table-data'}).find_all('div', {'class' : 'tableRow dataItem'})
 
@@ -58,10 +47,10 @@ for bill in bill_list:
         #a new BeautifulSoup instance to scrape the sub-webpage
         bill_soup = BeautifulSoup(bill_response.content, 'html.parser')
         bill_summary_div = bill_soup.find('div',{'class':'field-item even'})
-        bill_summary = bill_summary_div.find('p')
+        bill_summary = bill_summary_div.find('p').text
         
         bill_data= [{'Vote_Title':vote_title,'Vote_Issues':vote_issues, 'Bill_Summary': bill_summary}]
-        bill_data = bill_data*senators
+        bill_data = bill_data*100
         to_Add = pd.DataFrame(bill_data)
 
         
@@ -77,41 +66,18 @@ for bill in bill_list:
         csv_file_like = io.StringIO(decoded_csv)
         # Read into a pandas DataFrame
         df = pd.read_csv(csv_file_like)
-        
-        
-        filtered_df = pd.DataFrame(columns = ['Senator','Party', 'State','Vote'])
-        for i in range(senators):
-            
-            if big_df.shape[0] <= 2:
-                df['Vote_Title'] = to_Add['Vote_Title']
-                df['Vote_Issues'] = to_Add['Vote_Issues']
-                df['Bill_Summary'] = to_Add['Bill_Summary']
-                big_df = pd.concat([big_df,df],ignore_index=True)
-                
-            else:    
-               if df.loc[i,'Senator'] in big_df['Senator'].values:
-                   filtered_df = pd.concat([filtered_df,df.loc[i:i]])
-               else:
-                   print(df.loc[i,'Senator'])
-                   senators = senators - 1
-                   print(big_df['Senator'])
-                   
-        print(big_df.shape)
-                
-        filtered_df['Vote_Title'] = to_Add['Vote_Title']
-        filtered_df['Vote_Issues'] = to_Add['Vote_Issues']
-        filtered_df['Bill_Summary'] = to_Add['Bill_Summary']
+        df['Vote_Title'] = to_Add['Vote_Title']
+        df['Vote_Issues'] = to_Add['Vote_Issues']
+        df['Vote_Summary'] = to_Add['Bill_Summary']
 
-        big_df = pd.concat([big_df,filtered_df],ignore_index=True)
-        print(senators)
-        if senators == 0:
-            break;
+        big_df = pd.concat([big_df,df],ignore_index=True)
         
-        time.sleep(2)
+        time.sleep(1)
         
     except Exception as e:
         
         print(f"Error occurred: {e}")
+        
 
 driver.quit()
 
