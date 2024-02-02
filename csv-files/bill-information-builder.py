@@ -1,15 +1,21 @@
 '''
+This script was made to scrape information about bills off the political score-card
+webpage. The intent is to use this information to build an NLP model that can 
+categorize issues when given a proposed bill. 
+
+The output can be found in './bills.csv'
+
+@authors: Joshua Wu (jww2145) and Brian Echvarria (be2298)
+@see: https://scorecard.lcv.org/scorecard?year=2022
+'''
+
+
+'''
 Imports: 
 
 @BeautifulSoup: used for webscraping HTML obtained from the political score-card website 
 @requests: used to get the html for BeautifulSoup to scrape
 @csv: used to write rows into a bills.csv 
-
-
-@see https://scorecard.lcv.org/scorecard?year=2022: the website that we scraped for information regarding
-    proposed bill name, proposed bill summary and the related environmental concern. 
-
-@authors: Joshua Wu (jww2145) and Brian Echvarria (be2298)
 '''
 from bs4 import BeautifulSoup
 import requests
