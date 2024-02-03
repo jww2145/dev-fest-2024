@@ -14,6 +14,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, classification_report
+import re
 
 og_df = pd.read_csv("csv-files/votes.csv")
 og_df = og_df.dropna()
@@ -22,12 +23,10 @@ df = og_df.head(100000)
 
 #special splitter function to handle both cases in the Issues column
 def splitter(string):
-    string = string[:-1]
+    string = string.lower()
+    string = string.rstrip(',')
     string = string[:len(string)//2]
-    if ',' in string:
-        return string.split(',')
-    else:
-        return string.split('and')
+    return re.split(r'\s*(?:and\s*)?[,/]\s*', string)
 
 def punctuation_deleter(sentence):
     sentence = str(sentence)
