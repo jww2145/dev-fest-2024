@@ -5,7 +5,7 @@ categorize issues when given a proposed bill.
 
 The output can be found in './bills.csv'
 
-@authors: Joshua Wu (jww2145) and Brian Echvarria (be2298)
+@authors: Joshua Wu (jww2145)
 @see: https://scorecard.lcv.org/scorecard?year=2022
 '''
 

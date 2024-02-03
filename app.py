@@ -1,14 +1,18 @@
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, html, dcc, callback, Output, Input
+import plotly.express as px
+import pandas as pd
 
-app = dash.Dash()
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
+
+app = Dash(__name__)
 
 app.layout = html.Div([
-    html.H1('Hello World'),
-    html.P('This is a basic Dash app.')
+    html.H1(children='Name Pending', style={'textAlign':'center'}),
+    html.Div(children='Write Here', className = 'form', contentEditable='true'),
+
 ])
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
 
+
+if __name__ == '__main__':
+    app.run(debug=True)

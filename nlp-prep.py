@@ -1,4 +1,8 @@
-#this script will take the existing csv with information from the bills and convert the text into a form useable by our machine learning model
+'''
+this script will take the existing csv with information from the bills and convert the text into a form useable by our machine learning model
+
+@author: Brian Echavarria (be2298)
+'''
 import pandas as pd
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer

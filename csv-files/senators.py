@@ -1,3 +1,7 @@
+'''
+A full list of 2022 senators. 
+'''
+
 senators = {
     "Shelby, Richard C.": 1,
     "Tuberville, Tommy": 1,

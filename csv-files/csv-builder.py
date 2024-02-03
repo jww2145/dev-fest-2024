@@ -7,7 +7,7 @@ We have included the output in './votes.csv', but in the case that you would
 want to run the script yourself, beaware that it takes around 30-45 minutes to
 build. 
 
-@authors Joshua Wu (jww2145) and Brian Echavarria (be2298)
+@authors Joshua Wu (jww2145) 
 '''
 
 
