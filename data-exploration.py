@@ -2,8 +2,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import re
+from collections import Counter
 
-senatorsDF = pd.read_csv("csv-files/senate_votes copie.csv")
+senatorsDF = pd.read_csv("csv-files/senate_votes.csv")
 senatorsDF = senatorsDF.dropna()
 senatorsDF["Vote_Year"] = senatorsDF["Vote_Year"].astype(int)
 
@@ -36,4 +37,19 @@ bySenator = senatorsDF[senatorsDF['Senator'].isin(senatorsList)].groupby("Senato
 byBill = senatorsDF.groupby("Vote_Title")["Vote"].value_counts()
 
 
-print(senatorsDF)
+# for bill_name, bill in byBill:
+
+#     print(1)
+
+#analyze by year
+years = senatorsDF.Vote_Year.unique()
+
+year_info = dict()
+for y in years:
+    info = senatorsDF[senatorsDF["Vote_Year"]==y]
+    counted_values = Counter(issue for issues in info["Vote_Issues"] for issue in issues)
+    max_value, max_count = max(counted_values.items(), key=lambda x: x[1])
+
+    year_info[y] = (max_value, max_count)
+    
+
