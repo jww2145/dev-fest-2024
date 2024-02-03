@@ -17,7 +17,8 @@ from sklearn.metrics import accuracy_score, classification_report
 
 og_df = pd.read_csv("csv-files/votes.csv")
 og_df = og_df.dropna()
-df = og_df.head(1000)
+og_df = og_df.loc[og_df['Vote'] != "?"]
+df = og_df.head(100000)
 
 #special splitter function to handle both cases in the Issues column
 def splitter(string):
@@ -46,11 +47,7 @@ def stopword_remover(sentence):
 
     return words
 
-# #TODO:
-# def message_transformer(sentence):
 
-
-#     return 1
 
 df = df.drop('Vote_Title', axis=1)
 
@@ -68,15 +65,35 @@ df = df.join(
                 index=df.index,
                 columns=mlb.classes_))
 
+df['Party'] = pd.Categorical(df.Party)
+df['State'] = pd.Categorical(df.State)
 
-X_train, X_test, y_train, y_test = train_test_split(df[numerical_features + [text_feature]], df['label'], test_size=0.2, random_state=42)
+
+X_train, X_test, y_train, y_test = train_test_split(df.loc[:, df.columns != 'Vote'], df['Vote'], test_size=0.2, random_state=42)
 
 text_transformer = TfidfVectorizer(max_features=1000, stop_words='english')
-prerocessor = ColumnTransformer(
+preprocessor = ColumnTransformer(
     transformers = [
         ('text', text_transformer, 'Vote_Summary')
     ]
 )
+
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('classifier', MultinomialNB())
+])
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+#Calculate accuracy score
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy: {accuracy:.2f}')
+
+#Find Classification Report using sklearn
+print('\nClassification Report:')
+print(classification_report(y_test, y_pred))
 
 #Used this one time to get the issues that appear in the dataset in order to perform 1 hot encoding
 
@@ -88,4 +105,4 @@ prerocessor = ColumnTransformer(
 
 # print(issues)
 
-print(df)
+
