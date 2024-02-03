@@ -22,11 +22,19 @@ og_df = og_df.loc[og_df['Vote'] != "?"]
 df = og_df.head(100000)
 
 #special splitter function to handle both cases in the Issues column
-def splitter(string):
+def splitter(row):
+    string = row["Vote_Issues"]
     string = string.lower()
     string = string.rstrip(',')
     string = string[:len(string)//2]
     return re.split(r'\s*(?:and\s*)?[,/]\s*', string)
+
+#splitter for 2023 senate data
+def splitter2(row):
+    string = row["Vote_Issues"]
+    string = string.lower()
+    string = string.rstrip(',')
+    return string.split(";")
 
 def punctuation_deleter(sentence):
     sentence = str(sentence)
@@ -50,7 +58,7 @@ def stopword_remover(sentence):
 
 df = df.drop('Vote_Title', axis=1)
 
-df["Vote_Issues"] = df["Vote_Issues"].apply(splitter).apply(lambda x: [y.strip().lower() for y in x])
+df["Vote_Issues"] = df["Vote_Issues"].apply(lambda x: splitter2(x) if x["Vote_Year"] == 2023 else splitter(x), axis=1).apply(lambda x: [y.strip().lower() for y in x])
 
 # df["Vote_Summary"] = df["Vote_Summary"].str.lower()
 # df["Vote_Summary"] = df["Vote_Summary"].apply(punctuation_deleter).apply(stopword_remover)
