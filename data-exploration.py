@@ -44,12 +44,22 @@ byBill = senatorsDF.groupby("Vote_Title")["Vote"].value_counts()
 #analyze by year
 years = senatorsDF.Vote_Year.unique()
 
+issuesDF = senatorsDF.explode("Vote_Issues")
+
+issue_list = set(issuesDF["Vote_Issues"].tolist())
+base_dict = dict()
+for i in issue_list:
+    base_dict[i] = 0
+
+
 year_info = dict()
 for y in years:
+
     info = senatorsDF[senatorsDF["Vote_Year"]==y]
+    num_bills = info.shape[0]
     counted_values = Counter(issue for issues in info["Vote_Issues"] for issue in issues)
-    max_value, max_count = max(counted_values.items(), key=lambda x: x[1])
+    for item in counted_values.items():
+        print(1)
 
     year_info[y] = (max_value, max_count)
     
-
