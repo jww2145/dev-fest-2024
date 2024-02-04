@@ -3,6 +3,9 @@
     import SenatorCard from "./Senator-Card.svelte";
     import Papa from 'papaparse';
 
+    export const prerender = true;
+
+
     let senator_data = null
     let progress = null
     function handleSelectSenator(event) {

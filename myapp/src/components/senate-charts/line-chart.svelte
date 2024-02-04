@@ -2,6 +2,8 @@
   import * as d3 from 'd3'
   import { onMount } from 'svelte'
 
+  export const prerender = true;
+
 
   onMount(() => {
     // set the dimensions and margins of the graph

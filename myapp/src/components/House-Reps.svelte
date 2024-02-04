@@ -3,6 +3,9 @@
     import * as d3 from 'd3';
     import { feature } from 'topojson-client';
 
+    export const prerender = true;
+
+
     const hasNoCongressionalRep = ['Puerto Rico', 'District of Columbia', 'U.S. Virgin Islands', 'Guam', 'Northern Mariana Islands', 'American Samoa']
 
     const usAbbrs = {
