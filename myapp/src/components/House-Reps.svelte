@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, createEventDispatcher } from 'svelte';
     import * as d3 from 'd3';
     import { feature } from 'topojson-client';
 
@@ -7,7 +7,7 @@
 
 
     const hasNoCongressionalRep = ['Puerto Rico', 'District of Columbia', 'U.S. Virgin Islands', 'Guam', 'Northern Mariana Islands', 'American Samoa']
-
+    const dispatch = createEventDispatcher();
     const usAbbrs = {
         AL: 'Alabama',
         AK: 'Alaska',
@@ -99,11 +99,10 @@
               .attr("d", path)
               .style("fill", "steelblue")
               .on('click', function(event, d){
-                console.log("Path clicked", d); // Check if this logs when a path is clicked
-                const sel = d3.select(this); // Change this line for D3 v6 and above
-                console.log(sel)
+            
+                const sel = d3.select(this); 
+                dispatch('selectRep', { rep: d });
                 const currentFill = sel.style('fill');
-                console.log(currentFill)
                 const nextFill = currentFill !== 'rgb(238, 173, 117)' ? 'rgb(238, 173, 117)' : 'steelblue';
                 sel.style('fill', nextFill);
             });

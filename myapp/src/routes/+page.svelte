@@ -10,8 +10,11 @@
 <Header />
 <SenateChild/>
 <HouseChild/>
+<div class='buffer'></div>
 <SenateCharts/>
 
 <style>
-
+    .buffer{
+        padding: 5%;
+    }
 </style>

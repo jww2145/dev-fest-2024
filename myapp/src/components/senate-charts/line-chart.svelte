@@ -2,23 +2,28 @@
   import { onMount } from "svelte";
   import * as d3 from "d3";
 
-<<<<<<< HEAD
   export const prerender = true;
 
-=======
   let svg;
   let issues;
   let x;
   let y;
   let myLine;
->>>>>>> 163169ea7b015f2db47506063e3268cc5ba1fb9d
 
   onMount(() => {
-    const margin = { top: 20, right: 80, bottom: 30, left: 50 };
+    const margin = { top: 60, right: 80, bottom: 30, left: 50 };
     const width = 1000 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
 
-    svg = d3.select("svg");
+    svg = d3.select("#line-chart");
+
+    svg.append("text")
+      .attr("x", (width / 2) + margin.left) // Position at the center of the graph width-wise
+      .attr("y", margin.top / 2) // Position slightly above the graph
+      .attr("text-anchor", "middle") // Ensure the text is centered at its position
+      .style("font-size", "24px") // Set the font size of the title
+      .style("font-family", "Georgia, serif") // Optional: Set the font family of the title
+      .text("Trending Topics"); // Set the text of the title
 
     const g = svg
       .append("g")
@@ -29,14 +34,6 @@
 
     myLine = g.append("path");
 
-    const clip = svg
-      .append("svg:clipPath")
-      .attr("id", "clip")
-      .append("svg:rect")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("width", width)
-      .attr("height", height);
 
     const line = d3
       .line()
@@ -68,7 +65,7 @@
         g.append("g")
           .attr("class", "axis axis--x")
           .attr("transform", `translate(0,${height})`)
-          .call(d3.axisBottom(x));
+          .call(d3.axisBottom(x).tickFormat(d3.format("d")));
 
         g.append("g")
           .attr("class", "axis axis--y")
@@ -78,7 +75,24 @@
           .attr("y", 6)
           .attr("dy", "0.71em")
           .attr("fill", "#000")
-          .text("Count");
+          .text("Percent");
+
+        // Horizontal grid lines
+        g.append("g")
+          .attr("class", "grid")
+          .style("stroke-width", ".5px")
+          .style("stroke-opacity", .25)
+          .call(d3.axisLeft(y).tickSize(-width).tickFormat(''));
+
+        // Vertical grid lines
+        g.append("g")
+          .attr("class", "grid")
+          .style("stroke-width", ".5px")
+          .style("stroke-opacity", .25)
+          .attr("transform", `translate(0,${height})`)
+          .call(d3.axisBottom(x).tickSize(-height).tickFormat(''));
+
+
 
         const selector = d3.select("#issue_list").append("select");
 
@@ -109,20 +123,29 @@
 </script>
 
 <style>
-  .axis--x path {
-    display: none;
+  .parent{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
   }
 
-  .line {
-    fill: none;
-    stroke: steelblue;
-    stroke-width: 1.5px;
+  .left-child{
+    padding:2%;
   }
+
 </style>
 
 <body>
-  <svg width="1000" height="500"></svg>
-  <div id="issue_list"></div>
+  <div class = 'parent'>
+    <div class='left-child'>
+      <svg id = "line-chart" width="1000" height="500"></svg>
+    </div>
+   <div class ='right-child'>
+    <div id="issue_list"></div>
+   </div>
+ </div>
+
 </body>
 
 <!--Brian was Here-->

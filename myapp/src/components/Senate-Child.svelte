@@ -39,7 +39,7 @@
 
 <div class = 'container'>
     <div class = 'container-child-left'>
-        <p class = 'senator-intro'>Les sénateurs: tout ce que vous avez besoin de savoir</p><p class = 'senator-sub-intro'>Click a senator for more information!</p>
+        <p class = 'senator-intro'>The Senate: Everything You Need to Know</p><p class = 'senator-sub-intro'>Click a senator for more information!</p>
         <SenatorCard senator={senator_data} progress={progress}/>
     </div>
     <div class = 'container-child-right'><Senators on:selectSenator={handleSelectSenator}/></div>
