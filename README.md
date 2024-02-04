@@ -2,7 +2,7 @@
 
 ## Description
 
-The aim of this project is to explore the voting trends of US Politicians when it comes to environmental politics. We know that in the current state of US Affairs, voting is very bipartisan; however, we also believe that there could be some novel information that helps consistuents make an informed decision when going to the polls. Thus, we wanted to try and provide useful and tangible information through a variety of data visualization techniques. 
+The aim of this project is to explore the voting trends of US Politicians when it comes to environmental politics. We know that in the current state of US Affairs, voting is very partisan; however, we also believe that there could be some novel information that helps consistuents make an informed decision when going to the polls. Thus, we wanted to try and provide useful and tangible information through a variety of data visualization techniques. 
 
 Our approach to this project was two pronged: before we could analyze any data we needed to obtain said data. Naturally, our first plan of attack was to scrape the 'https://scorecard.lcv.org/' website for both house and senate votes on environmental bills. Conveniently, the website provides an option for us to export data as CSV, so we used a **python** script with the BeautifulSoup and Selenium libraries to handle that for us. Our csvs ended up being too big to push into this github repository, but we have included both python scripts for a user to run. 
 
