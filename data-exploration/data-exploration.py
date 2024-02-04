@@ -70,7 +70,7 @@ for s, p in pros.items():
     sensDF.loc[s, ["State", "Party", "Pro-Environment-Rating"]] = {"State":state, "Party":party, "Pro-Environment-Rating":percent}
 
 #used once to create a csv for webapp
-sensDF.to_csv("senatorRating.csv", index_label="Senator")
+#sensDF.to_csv("senatorRating.csv", index_label="Senator")
 
 #analyze by bill
 byBill = senatorsDF.groupby("Vote_Title")["Vote"].value_counts()
