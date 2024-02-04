@@ -39,23 +39,8 @@
 
 <div class = 'container'>
     <div class = 'container-child-left'>
-<<<<<<< HEAD
         <p class = 'senator-intro'>The Senate: Everything You Need to Know</p><p class = 'senator-sub-intro'>Click a senator for more information!</p>
         <SenatorCard senator={senator_data} progress={progress}/>
-=======
-        <p class = 'senator-intro'>Les sénateurs: everything you need to know</p><p class = 'senator-sub-intro'>Hover over a senator for more information!</p>
-        <p>
-            Hello! 8=>
-
-            Donec rhoncus ut tellus in suscipit. Proin rutrum sit amet elit eu ornare.
-            Donec sed mi gravida, scelerisque dolor sit amet, ornare felis. Fusce vestibulum, 
-            ipsum nec aliquam dictum, purus ante facilisis odio, ut tincidunt erat dui nec sem. Morbi eu libero mollis, 
-            porttitor felis et, pulvinar odio. Suspendisse eget nibh vitae purus maximus congue ac eu eros. Vestibulum quis 
-            massa vitae lacus molestie pretium. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac 
-            turpis egestas. Vestibulum eu diam nec ex aliquet pulvinar. Sed ac condimentum metus, in vulputate purus. Nunc in
-            metus mollis leo tempus luctus. Curabitur consectetur aliquam elit. Maecenas non ullamcorper neque.
-          </p>
->>>>>>> cf2458e (added a dropdown for relevance graph)
     </div>
     <div class = 'container-child-right'><Senators on:selectSenator={handleSelectSenator}/></div>
 </div>
