@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 from collections import Counter
-import copy
+
 
 senatorsDF = pd.read_csv("csv-files/senate_votes.csv")
 senatorsDF = senatorsDF.dropna()
@@ -60,6 +60,16 @@ senatorsDF["Vote_Issues"] = senatorsDF.apply(lambda x: splitter2(x) if x["Vote_Y
 #analyzing by current senator
 bySenator = senatorsDF[senatorsDF['Senator'].isin(senatorsList)].groupby("Senator")
 
+sensDF = pd.DataFrame(columns = ["State", "Party", "Pro-Environment Rating"], index = senatorsList)
+pros = bySenator["Vote"].apply(lambda x: (x == "+").sum())
+for s, p in pros.items():
+    party = senatorsDF[senatorsDF["Senator"]==s]["Party"].iloc[0]
+    state = senatorsDF[senatorsDF["Senator"]==s]["State"].iloc[0]
+    votes = len(bySenator.get_group(s))
+    percent = p/votes
+    sensDF.loc[s, ["State", "Party", "Pro-Environment Rating"]] = {"State":state, "Party":party, "Pro-Environment Rating":percent}
+    
+
 #analyze by bill
 byBill = senatorsDF.groupby("Vote_Title")["Vote"].value_counts()
 
@@ -88,7 +98,7 @@ for y in years:
 
 issues_by_year =  issues_by_year[::-1] #sorting years ascending instead of descending
 #used one to create a json for webapp
-#issues_by_year.to_json('issues.json', orient='records', lines=True)
+issues_by_year.to_json('issues.json', orient='index')
 
 #plot the issues relevance over time
 for column in issues_by_year.columns:
@@ -104,3 +114,4 @@ plt.legend()
 
 
     
+print(sensDF)
