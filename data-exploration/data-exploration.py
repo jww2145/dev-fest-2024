@@ -60,17 +60,17 @@ senatorsDF["Vote_Issues"] = senatorsDF.apply(lambda x: splitter2(x) if x["Vote_Y
 #analyzing by current senator
 bySenator = senatorsDF[senatorsDF['Senator'].isin(senatorsList)].groupby("Senator")
 
-sensDF = pd.DataFrame(columns = ["State", "Party", "Pro-Environment Rating"], index = senatorsList)
+sensDF = pd.DataFrame(columns = ["State", "Party", "Pro-Environment-Rating"], index = senatorsList)
 pros = bySenator["Vote"].apply(lambda x: (x == "+").sum())
 for s, p in pros.items():
     party = senatorsDF[senatorsDF["Senator"]==s]["Party"].iloc[0]
     state = senatorsDF[senatorsDF["Senator"]==s]["State"].iloc[0]
     votes = len(bySenator.get_group(s))
     percent = p/votes
-    sensDF.loc[s, ["State", "Party", "Pro-Environment Rating"]] = {"State":state, "Party":party, "Pro-Environment Rating":percent}
+    sensDF.loc[s, ["State", "Party", "Pro-Environment-Rating"]] = {"State":state, "Party":party, "Pro-Environment-Rating":percent}
 
 #used once to create a csv for webapp
-#sensDF.to_csv("senatorRating.csv", index_label="Senator")
+sensDF.to_csv("senatorRating.csv", index_label="Senator")
 
 #analyze by bill
 byBill = senatorsDF.groupby("Vote_Title")["Vote"].value_counts()
