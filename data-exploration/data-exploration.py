@@ -68,7 +68,9 @@ for s, p in pros.items():
     votes = len(bySenator.get_group(s))
     percent = p/votes
     sensDF.loc[s, ["State", "Party", "Pro-Environment Rating"]] = {"State":state, "Party":party, "Pro-Environment Rating":percent}
-    
+
+#used once to create a csv for webapp
+sensDF.to_csv("senatorRating.csv", index_label="Senator")
 
 #analyze by bill
 byBill = senatorsDF.groupby("Vote_Title")["Vote"].value_counts()
@@ -97,8 +99,8 @@ for y in years:
         issues_by_year.loc[y, item] = amt/num_bills
 
 issues_by_year =  issues_by_year[::-1] #sorting years ascending instead of descending
-#used one to create a json for webapp
-issues_by_year.to_json('issues.json', orient='index')
+#used once to create a csv for webapp
+issues_by_year.to_csv('issues.csv', index_label="Year")
 
 #plot the issues relevance over time
 for column in issues_by_year.columns:
