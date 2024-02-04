@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, createEventDispatcher } from 'svelte';
     import * as d3 from 'd3';
 
     const senator_radius = 17;
@@ -11,6 +11,7 @@
         if(d == "Republican") return "#e41a1c";
         return "#4daf4a";
     }
+    const dispatch = createEventDispatcher();
 
     let senators = []; // Placeholder for senator data
     let images = "true"; // or false, depending on your needs
@@ -131,6 +132,7 @@
             .append('image')
             .attr('href', (d) => `https://raw.githubusercontent.com/jww2145/images/gh-pages/congress/225x275/${d.bioguide}.jpg`) // Note: 'xlink:href' is now simply 'href'
             .attr('width', senator_radius * 2)
+            .on("click", function(event,d){dispatch('selectSenator', { senator: d });})
             .append("title").text((d) => d.name.official_full);
         }
     }

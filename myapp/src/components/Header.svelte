@@ -24,12 +24,12 @@
         font-size: smaller;
     }
 
-    b{
+    :global(b){
         font-weight: 1500;
         color: #005682;
     }
 
-    ::selection {
+    :global(::selection) {
         background: #D8F1FF;
     }
 </style>
