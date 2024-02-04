@@ -29,7 +29,7 @@ For the interactive Senate and Congress map, simply click on the image (for sena
 
 ## Credit 
 
-[Katie Marriner](https://github.com/katiemarriner) for providing useful tips and tricks about svelte, d3.json and topojson - all tools we have used in this hackathon! 
-[Jeremiah Kimelman](https://gist.github.com/jeremiak) for providing the congressional district map, which we have only slightly altered 
-[Herb Susmann](https://github.com/herbps10) for providing the current Senate Map
-[The @unitedstates project](https://theunitedstates.io/) for providing images for the senators (and all the other information!) 
+1. [Katie Marriner](https://github.com/katiemarriner) for providing useful tips and tricks about svelte, d3.json and topojson - all tools we have used in this hackathon! 
+2. [Jeremiah Kimelman](https://gist.github.com/jeremiak) for providing the congressional district map, which we have only slightly altered 
+3. [Herb Susmann](https://github.com/herbps10) for providing the current Senate Map
+4. [The @unitedstates project](https://theunitedstates.io/) for providing images for the senators (and all the other information!) 
