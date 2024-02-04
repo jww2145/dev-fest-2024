@@ -1,111 +1,130 @@
 <script>
-  import * as d3 from 'd3'
-  import { onMount } from 'svelte'
+  import { onMount } from "svelte";
+  import * as d3 from "d3";
 
+<<<<<<< HEAD
   export const prerender = true;
 
+=======
+  let svg;
+  let issues;
+  let x;
+  let y;
+  let myLine;
+>>>>>>> 163169ea7b015f2db47506063e3268cc5ba1fb9d
 
   onMount(() => {
-    // set the dimensions and margins of the graph
-  var margin = {top: 10, right: 100, bottom: 30, left: 30},
-      width = 460 - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    const margin = { top: 20, right: 80, bottom: 30, left: 50 };
+    const width = 1000 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
 
-  // append the svg object to the body of the page
-  var svg = d3.select("#my_dataviz")
-    .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+    svg = d3.select("svg");
 
-    
-    d3.csv("https://gist.githubusercontent.com/jww2145/412d865cd12317e9e8486194cd23c229/raw/386bf6fcc73542d9883159e0fb52264cc5139eec/senate-issues.csv").then(function(data) {
-      var allGroup = ["public right to know", "forests", "water", "lands", "climate", "justice and democracy", "public lands", "judiciary", "transportation", "drilling", "oceans", "wildlife", "toxics", "agriculture", "other", "air", "environmental justice", "energy"]
+    const g = svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-      const dataReady = allGroup.map(function(grpName) { 
-        return{
-          name: grpName,
-          values: data.map(function(d){
-            return {time: d.time, value: +d[grpName]}
-          })
-        };
-      });
+    x = d3.scaleLinear().domain([1971, 2023]).range([0, width]);
+    y = d3.scaleLinear().domain([1, 0]).range([height, 0]);
+
+    myLine = g.append("path");
+
+    const clip = svg
+      .append("svg:clipPath")
+      .attr("id", "clip")
+      .append("svg:rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", width)
+      .attr("height", height);
+
+    const line = d3
+      .line()
+      .curve(d3.curveBasis)
+      .x((d) => x(d.time))
+      .y((d) => y(d.rate));
+
+    d3.csv("https://gist.githubusercontent.com/jww2145/412d865cd12317e9e8486194cd23c229/raw/386bf6fcc73542d9883159e0fb52264cc5139eec/senate-issues.csv").then(function(data){
+      issues = data.columns.slice(1).map((id) => {
+          return {
+            id: id,
+            values: data.map((d) => {
+              return {
+                time: +d.time,  // Convert to number
+                rate: +d[id],   // Convert to number
+              };
+            }),
+          };
+        });
 
 
-      var myColor = d3.scaleOrdinal()
-        .domain(allGroup)
-        .range(d3.schemeSet2);
-      
-      var x = d3.scaleLinear()
-        .domain([1971,2023])
-        .range([0,width]);
-      
-      svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x))
-      
-      var y = d3.scaleLinear()
-        .domain([1,0])
-        .range([0,height]);
-          // Add the lines
-    const line = d3.line()
-      .x(d => x(+d.time))
-      .y(d => y(+d.value))
+        x.domain(d3.extent(data, (d) => d.time));
 
-      svg.selectAll('myLines')
-        .data(dataReady)
-        .enter()
-        .append("path")
-        .attr("d", function(d){return line(d.values)})
-        .attr("stroke", function(d){ return myColor(d.name) })
-        .style("stroke-width", 4)
-        .style("fill", "none")
+        y.domain([
+          d3.min(issues, (c) => d3.min(c.values, (d) => d.rate)),
+          d3.max(issues, (c) => d3.max(c.values, (d) => d.rate)),
+        ]);
 
-        svg
-      // First we need to enter in a group
-        .selectAll("myDots")
-        .data(dataReady)
-        .enter()
-          .append('g')
-          .style("fill", function(d){ return myColor(d.name) })
-        // Second we need to enter in the 'values' part of this group
-        .selectAll("myPoints")
-        .data(function(d){ return d.values })
-        .enter()
-        .append("circle")
-          .attr("cx", function(d) { return x(d.time) } )
-          .attr("cy", function(d) { return y(d.value) } )
-          .attr("r", 5)
-          .attr("stroke", "white")
-        
-        svg
-          .selectAll("myLabels")
-          .data(dataReady)
+        g.append("g")
+          .attr("class", "axis axis--x")
+          .attr("transform", `translate(0,${height})`)
+          .call(d3.axisBottom(x));
+
+        g.append("g")
+          .attr("class", "axis axis--y")
+          .call(d3.axisLeft(y))
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", "0.71em")
+          .attr("fill", "#000")
+          .text("Count");
+
+        const selector = d3.select("#issue_list").append("select");
+
+        const labels = selector
+          .selectAll("option")
+          .data(issues)
           .enter()
-            .append('g')
-            .append("text")
-              .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
-              .attr("transform", function(d) { return "translate(" + x(d.value.time) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
-              .attr("x", 12) // shift the text a bit more right
-              .text(function(d) { return d.name; })
-              .style("fill", function(d){ return myColor(d.name) })
-              .style("font-size", 15)
+          .append("option")
+          .attr("value", (_, i) => i)
+          .text((d) => d.id);
 
-    })
-  })
+        const menu = d3.select("#issue_list select").on("change", redraw);
 
-  function buildChart(data){
-    var allGroup = Object.keys(data['1971'])
+        redraw();
 
-    var dataReady = allGroup.map( function(grpName){
-      return{
-        name: grpName,
-        values: data.map
+        function redraw() {
+          const series = menu.property("value");
+          const adata = issues[series];
+
+          myLine.datum(adata.values)
+            .attr("d", line)
+            .attr("stroke", "teal")
+            .attr("fill", "none");
+        }
       }
-    })
-  }
+    );
+    });
 </script>
 
-<div id="my_dataviz"></div>
+<style>
+  .axis--x path {
+    display: none;
+  }
+
+  .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+</style>
+
+<body>
+  <svg width="1000" height="500"></svg>
+  <div id="issue_list"></div>
+</body>
+
+<!--Brian was Here-->
+
+
