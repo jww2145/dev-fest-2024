@@ -1,5 +1,9 @@
+/**
+* This component will be rendered upon a representative bubble being clicked on. 
+*
+* @authors Joshua Wu
+*/
 <script>
-
     export let rep = null;
 </script>
 

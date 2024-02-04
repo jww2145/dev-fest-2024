@@ -1,3 +1,11 @@
+/**
+* While this component is not done yet, we have big plans!
+* Unforunately, we did not have enough time in this hackathon
+* to completely analyze all 435 house of representatives. 
+* 
+*
+* @authors Joshua Wu
+*/
 <script>
     import HouseReps from "./House-Reps.svelte";
     import HouseCard from "./House-Card.svelte";

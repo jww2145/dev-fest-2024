@@ -1,3 +1,8 @@
+/**
+* The logistical sub-component of Progress-Bar.svelte
+*
+* @authors Joshua Wu
+*/
 <script>
     export let progress = 0;
 

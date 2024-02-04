@@ -1,3 +1,12 @@
+/**
+* Our proudest achievement during the 2024 Devfest! This component
+* is the parent div to both the beautifully rendered current senator
+* as well as the 'Senate-Card' that lists out contact information in case 
+* a consistuent want to get in contact
+*
+* @authors Joshua Wu and Brian Echavarria
+* @see ./data-exploration/senatorRating.csv 
+*/
 <script>
     import Senators from "./Senators.svelte";
     import SenatorCard from "./Senator-Card.svelte";

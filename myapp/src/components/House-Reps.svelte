@@ -1,3 +1,14 @@
+/**
+* Major thanks to Jeremia Kimelman for doing the majority of the leg work
+* required to display the cool Congressional Map of the United States.
+* 
+* The only thing we altered was to add the ability to display representative 
+* info upon clicking a district. In the future, we are planning on adding
+* more features.
+*
+* @authors Joshua Wu
+* @see https://observablehq.com/@jeremiak/an-animated-cartogram-of-the-us-congress
+*/
 <script>
     import { onMount, createEventDispatcher } from 'svelte';
     import * as d3 from 'd3';

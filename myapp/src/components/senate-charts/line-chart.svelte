@@ -1,3 +1,11 @@
+/**
+* This component was made to display the line-chart d3 object, generated from analyzing 
+* scraped data from https://scorecard.lcv.org/scorecard?year=2022. The graph will show 
+* the most popular trend year by year, in a connected scatterplot format. 
+*
+* @authors Joshua Wu and Brian Echvarria
+* @see ./data-exploration/issues.csv 
+*/
 <script>
   import { onMount } from "svelte";
   import * as d3 from "d3";
@@ -47,8 +55,8 @@
             id: id,
             values: data.map((d) => {
               return {
-                time: +d.time,  // Convert to number
-                rate: +d[id],   // Convert to number
+                time: +d.time,  
+                rate: +d[id],   
               };
             }),
           };

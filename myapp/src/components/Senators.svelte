@@ -1,3 +1,13 @@
+/**
+* Many thanks to Herb Susmann for sharing his template on ObservableHQ
+* required to display the cool Congressional Map of the United States.
+* 
+* Additionally, thanks to https://theunitedstates.io/ for providing the 
+* images for all the senators
+*
+* @authors Joshua Wu
+* @see https://observablehq.com/@herbps10/current-u-s-senate
+*/
 <script>
     import { onMount, createEventDispatcher } from 'svelte';
     import * as d3 from 'd3';
