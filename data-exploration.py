@@ -87,6 +87,8 @@ for y in years:
         issues_by_year.loc[y, item] = amt/num_bills
 
 issues_by_year =  issues_by_year[::-1] #sorting years ascending instead of descending
+#used one to create a json for webapp
+issues_by_year.to_json('issues.json', orient='records', lines=True)
 
 #plot the issues relevance over time
 for column in issues_by_year.columns:
@@ -98,5 +100,7 @@ plt.title("Issue Relevance in Senate by Year")
 plt.legend()
 
 #display plot
-plt.show()
+#plt.show()
+
+
     
