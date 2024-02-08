@@ -1,8 +1,3 @@
-/**
-* This component will be rendered upon a senator bubble being clicked on. 
-*
-* @authors Joshua Wu
-*/
 <script>
     import ProgressBar from "./senate-charts/Progress-Bar.svelte";
     export let senator = null;

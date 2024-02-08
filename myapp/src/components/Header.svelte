@@ -1,8 +1,3 @@
-/**
-* This component is our amazing header that introduces ourselves!
-*
-* @authors Joshua Wu and Brian Echvarria
-*/
 <div class = 'header'></div>
 <p class = 'intro'>Created for DevFest 2024</p>
 <h1>Environmental Politics by the Numbers</h1>
