@@ -28,9 +28,9 @@ def splitter(row):
             temp[i] = "air"
         elif "clean water" in temp[i]:
             temp[i] = "water"
-        elif "climate" in temp[i]:
+        if "climate" in temp[i]:
             temp[i] = "climate"
-        elif "energy" in temp[i]:
+        if "energy" in temp[i]:
             temp[i] = "energy"
     return temp
 
@@ -48,9 +48,9 @@ def splitter2(row):
             temp[i] = "air"
         elif "clean water" in temp[i]:
             temp[i] = "water"
-        elif "climate" in temp[i]:
+        if "climate" in temp[i]:
             temp[i] = "climate"
-        elif "energy" in temp[i]:
+        if "energy" in temp[i]:
             temp[i] = "energy"
     return temp
 
