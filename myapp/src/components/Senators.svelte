@@ -2,8 +2,6 @@
     import { onMount, createEventDispatcher } from 'svelte';
     import * as d3 from 'd3';
 
-    export const prerender = true;
-
     const senator_radius = 17;
     const width = 1000; // Define a suitable width for your visualization
     const height = 450; // Initially define a suitable height, will be recalculated
